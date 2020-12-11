@@ -124,11 +124,11 @@
                             <p class="dropdown-title-text mt-2">Authentication required for 3 apps</p>
                         </div>
                         <div class="dropdown-body border-top pt-0">
-                            <a class="dropdown-grid">
+                            <a class="dropdown-grid" href="{{ route('logout') }}" onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
                                 <i class="grid-icon mdi mdi-logout mdi-2x"></i>
                                 <span class="grid-tittle">
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                        document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item">
                                         {{ __('Logout') }}
                                     </a>
                                 </span>

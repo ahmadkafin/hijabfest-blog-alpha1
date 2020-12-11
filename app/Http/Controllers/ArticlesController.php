@@ -3,10 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\updateArticleRequest;
+use App\Models\ArticlesModel;
+use App\Models\PivotsArticlesModel;
 use Illuminate\Http\Request;
+use App\Repositories\ArticlesRepositories;
+use App\Repositories\CategoriesRepositories;
+use App\Repositories\PivotsArticleRepositories;
+use Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Support\Facades\DB;
 
 class ArticlesController extends Controller
 {
+
+    private $article, $category, $pivots;
+
+    public function __construct(ArticlesRepositories $article, CategoriesRepositories $category, PivotsArticleRepositories $pivots)
+    {
+        $this->article = $article;
+        $this->category = $category;
+        $this->pivots = $pivots;
+    }
 
     /**
      * Display a listing of the resource.
@@ -15,7 +32,9 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        $page = 10;
+        $articles = $this->article->getArticle($page);
+        return view('admin.page-articles-show', compact('articles'));
     }
 
     /**
@@ -25,7 +44,8 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        //
+        $categories = $this->category->getCategory();
+        return view('admin.page-articles-create', compact('categories'));
     }
 
     /**
@@ -36,7 +56,23 @@ class ArticlesController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $dataArtikel = $this->article->createArticle([
+                'article_title'         => $request->article_title,
+                'article_slug'          => $request->article_slug,
+                'article_content'       => $request->article_content,
+                'article_url_video'     => $request->article_url_video,
+                'article_video_embeed'  => $request->article_video_embeed
+            ]);
+            $categories = $request->category_name;
+            $dataArtikel->category()->sync($categories);
+            DB::commit();
+            return redirect('admin/articles')->with('status', 'Data ' . $request->article_title . ' berhasil disimpan');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('message', $e->getMessage());
+        }
     }
 
     /**
@@ -45,9 +81,10 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $article = $this->article->getArticleBySlug($slug);
+        return view('publish.show-article', compact('article'));
     }
 
     /**
@@ -58,7 +95,9 @@ class ArticlesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories = $this->category->getCategory();
+        $article    = $this->article->findArticle($id);
+        return view('admin.page-articles-edit', compact('categories', 'article'));
     }
 
     /**
@@ -68,9 +107,26 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ArticleRequest $request, $id)
+    public function update(updateArticleRequest $request, $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $articles = $this->article->getsArticle($id);
+            $articles->update([
+                'article_title'         => $request->article_title,
+                'article_slug'          => $request->article_slug,
+                'article_content'       => $request->article_content,
+                'article_url_video'     => $request->article_url_video,
+                'article_video_embeed'  => $request->article_video_embeed
+            ]);
+            $categories = $request->category_name;
+            $articles->category()->sync($categories);
+            DB::commit();
+            return redirect('admin/articles')->with('status', 'Data ' . $request->article_title . ' berhasil update');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('message', $e->getMessage());
+        }
     }
 
     /**
@@ -81,6 +137,14 @@ class ArticlesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->article->deleteArticle($id);
+        $this->pivots->deletePivots($id);
+        return redirect()->back()->with('status', 'Artikel berhasil di hapus');
+    }
+
+    public function getSlug(Request $request)
+    {
+        $slug = SlugService::createSlug(ArticlesModel::class, 'article_slug', $request->article_title);
+        return response()->json(['slug' => $slug]);
     }
 }

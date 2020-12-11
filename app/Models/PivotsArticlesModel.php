@@ -12,9 +12,9 @@ class PivotsArticlesModel extends Model
     protected $fillable =
     [
         'id_articles',
-        'id_categories' 
+        'id_categories'
     ];
-    
+
     public function articles()
     {
         return $this->belongsToMany(ArticlesModel::class);
@@ -22,6 +22,6 @@ class PivotsArticlesModel extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(CategoriesModel::class);
+        return $this->belongsTo(CategoriesModel::class, 'id_categories');
     }
 }

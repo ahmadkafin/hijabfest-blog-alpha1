@@ -17,7 +17,11 @@ class CategoriesModel extends Model
 
     public function pivots()
     {
-        return $this->hasMany(PivotsArticlesModel::class);
+        return $this->hasMany(PivotsArticlesModel::class, 'id_categories');
     }
 
+    public function articles()
+    {
+        return $this->belongsToMany(ArticlesModel::class, 'tbl_pivots_articles');
+    }
 }

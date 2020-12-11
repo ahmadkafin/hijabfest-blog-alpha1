@@ -1,0 +1,72 @@
+$(document).on('change', '#new-cat', function(){
+        if(this.checked){
+            $('#kategori-baru').css('display', 'block');
+        } else {
+            $('#kategori-baru').css('display', 'none');
+        }
+    });
+
+    $(document).on('keyup', '#tags-input', function(){
+        var query = $(this).val();
+        if(query != '')
+        {
+            var _token = $('input[name="_token"]').val();
+            let _url = '/admin/articles/typehead'
+            $.ajax({
+                url: _url,
+                method:"post",
+                data:{query:query, _token:_token},
+                success: function(data)
+                {
+                    $('#results').fadeIn();
+                    $('#results').html(data);
+                }
+            });
+        }
+    });
+
+    $('#tags-input').keypress(function(event){
+        var values = $(this).val()  
+        var lss = values.replace(/ /g, '-');
+        if(event.keyCode === 10 || event.keyCode === 13) {
+            event.preventDefault();
+            $('select').append(
+                '<option selected value="'+values+'">'+values+'</option>'
+            );
+            $('#res').prepend(
+                '<span class="badge badge-info" id="new-'+lss+'">' + values + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></span>'
+            );
+            $(this).val('');
+        }
+        $(document).on('click', '.close', function(){
+            $('option[value="'+values+'"]').remove();
+            $('#new-'+lss).remove();
+        });
+    });
+
+    $(document).on('click', 'a.list-group-item', function(){  
+        $('#tags-input').val($(this).text());
+        var vals = $(this).text();
+        var id = $(this).data('id');  
+        $('#results').fadeOut();
+        $('#res').prepend(
+            '<span class="badge badge-info" id="'+id+'">' + vals + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></span>'
+        );
+        $('select').append(
+            '<option selected value="'+id+'">'+vals+'</option>'
+        );
+        $('#tags-input').val('');
+        
+        $(document).on('click', '.close', function(){
+            $('option[value="'+id+'"]').remove();
+            $('#'+id).remove();
+        });
+    });
+
+    $(document).keydown(function(e) {
+    // ESCAPE key pressed
+        if (e.keyCode == 27) {
+            $('#tags-input').val('');
+            $('#results').fadeOut();
+        }
+    });

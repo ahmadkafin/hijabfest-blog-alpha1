@@ -5,29 +5,32 @@
                 src="{{asset('vendor/label/assets/images/profile/male/image_1.png')}}" alt="profile image">
         </div>
         <div class="info-wrapper">
-            <p class="user-name">Allen Clerk</p>
+            <p class="user-name">{{Auth::user()->name}}</p>
             <h6 class="display-income">$3,400,00</h6>
         </div>
     </div>
     <ul class="navigation-menu">
         <li class="nav-category-divider">MAIN</li>
-        <li>
-            <a href="index.html">
+        <li class="{{Request::segment(2) === 'dashboard' ? 'active' : ''}}">
+            <a href="/admin/dashboard">
                 <span class="link-title">Dashboard</span>
                 <i class="mdi mdi-gauge link-icon"></i>
             </a>
         </li>
-        <li>
-            <a href="#sample-pages" data-toggle="collapse" aria-expanded="false">
-                <span class="link-title">Sample Pages</span>
+        <li class="{{Request::segment(2) === 'articles' || Request::segment(2) === 'categories' ? 'active' : ''}}">
+            <a href="#blogs" data-toggle="collapse"
+                {{Request::segment(2) === 'articles' || Request::segment(2) === 'categories' ? 'aria-expanded=true' : 'aria-expanded="false" class="collapsed"'}}>
+                <span class="link-title">Blogs</span>
                 <i class="mdi mdi-flask link-icon"></i>
             </a>
-            <ul class="collapse navigation-submenu" id="sample-pages">
+            <ul class="collapse navigation-submenu {{Request::segment(2) === 'articles' || Request::segment(2) === 'categories' ? 'show' : ''}}"
+                id="blogs">
                 <li>
-                    <a href="pages/sample-pages/login_1.html" target="_blank">Login</a>
+                    <a class="{{Request::segment(2) === 'articles' ? 'active' : ''}}"
+                        href="/admin/articles">Articles</a>
                 </li>
                 <li>
-                    <a href="pages/sample-pages/error_2.html" target="_blank">Error</a>
+                    <a class="{{Request::segment(2) === 'categories' ? 'active' : ''}}" href="#">Categories</a>
                 </li>
             </ul>
         </li>

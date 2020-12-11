@@ -13,7 +13,6 @@
             <div class="grid-body text-gray">
                 <div class="d-flex justify-content-between">
                     <p>30%</p>
-                    <p>+06.2%</p>
                 </div>
                 <p class="text-black">Visitor</p>
                 <div class="wrapper w-50 mt-4">
@@ -22,27 +21,41 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
+    <div class="col-md-3 col-sm-6 col-6 equel-grid">
+        <div class="grid">
+            <div class="grid-body text-gray">
+                <div class="d-flex justify-content-between">
+                    <p>30%</p>
+                </div>
+                <p class="text-black">Visitor</p>
+                <div class="wrapper w-50 mt-4">
+                    <canvas height="45" id="stat-line_2"></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+{{-- <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __('Dashboard') }}</div>
+
+<div class="card-body">
+    @if (session('status'))
+    <div class="alert alert-success" role="alert">
+        {{ session('status') }}
+    </div>
+    @endif
+
+    {{ __('You are logged in!') }}
+</div>
+</div>
+</div>
+</div>
+</div> --}}
 @endsection
 
 @push('scripts')

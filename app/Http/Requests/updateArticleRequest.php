@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ArticleRequest extends FormRequest
+class updateArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class ArticleRequest extends FormRequest
     {
         return [
             'article_title'     => 'required|max:150',
-            'article_slug'      => 'required|unique:tbl_articles,article_slug,',
+            'article_slug'      => 'required|',
             'article_content'   => 'required',
             'article_url_video' => 'nullable|url',
             'category_name'     => 'nullable'

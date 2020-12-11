@@ -24,5 +24,17 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::group(['prefix' => 'admin', 'middleware' => 'isAdmin'], function () {
     Route::resource('dashboard', AdminController::class);
-    Route::resource('articles', ArticlesController::class);
+    Route::get('articles', [ArticlesController::class, 'index']);
+    Route::group(['prefix' => 'articles'], function () {
+        Route::get('create', [ArticlesController::class, 'create']);
+        Route::post('store', [ArticlesController::class, 'store']);
+        Route::get('getSlug', [ArticlesController::class, 'getSlug'])->name('cekslug');
+        Route::get('edit/{id}', [ArticlesController::class, 'edit']);
+        Route::put('update/{id}', [ArticlesController::class, 'update']);
+        Route::delete('delete/{id}', [ArticlesController::class, 'destroy'])->name('deletes');
+        Route::get('show/{slug}', [ArticlesController::class, 'show']);
+    });
+});
+
+Route::group(['prefix' => 'publish'], function () {
 });
