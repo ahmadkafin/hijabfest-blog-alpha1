@@ -2,7 +2,7 @@
     <div class=" t-header-brand-wrapper">
         <a href="index.html">
             <img class="logo img-fluid" src="{{asset('img/Logo.png')}}" alt="logo" style="width: 50px">
-            <img class="logo-mini" src="../assets/images/logo_mini.svg" alt="">
+            <img class="logo-mini" src="{{asset('img/Logo.png')}}" alt="">
         </a>
     </div>
     <div class="t-header-content-wrapper">
@@ -77,7 +77,8 @@
                         <div class="dropdown-body">
                             <div class="dropdown-list">
                                 <div class="image-wrapper">
-                                    <img class="profile-img" src="../assets/images/profile/male/image_1.png"
+                                    <img class="profile-img"
+                                        src="{{asset('vendor/label/assets/images/profile/male/image_1.png')}}"
                                         alt="profile image">
                                     <div class="status-indicator rounded-indicator bg-success"></div>
                                 </div>
@@ -88,7 +89,8 @@
                             </div>
                             <div class="dropdown-list">
                                 <div class="image-wrapper">
-                                    <img class="profile-img" src="../assets/images/profile/female/image_2.png"
+                                    <img class="profile-img"
+                                        src="{{asset('vendor/label/assets/images/profile/male/image_1.png')}}"
                                         alt="profile image">
                                     <div class="status-indicator rounded-indicator bg-success"></div>
                                 </div>
@@ -99,7 +101,8 @@
                             </div>
                             <div class="dropdown-list">
                                 <div class="image-wrapper">
-                                    <img class="profile-img" src="../assets/images/profile/male/image_3.png"
+                                    <img class="profile-img"
+                                        src="{{asset('vendor/label/assets/images/profile/male/image_1.png')}}"
                                         alt="profile image">
                                     <div class="status-indicator rounded-indicator bg-warning"></div>
                                 </div>

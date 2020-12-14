@@ -77,9 +77,9 @@
         integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous">
     </script>
     {{-- this page script --}}
-    {{-- <script src="{{asset('vendor/label/assets/vendors/js/core.js')}}"></script>
+    <script src="{{asset('vendor/label/assets/vendors/js/core.js')}}"></script>
     <script src="{{asset('js/global-scripts.js')}}"></script>
-    <script src="{{asset('vendor/label/assets/vendors/js/core.js')}}"></script> --}}
+    <script src="{{asset('vendor/label/assets/vendors/js/core.js')}}"></script>
     <script>
         $(window).on('load', function() {
             setTimeout(function(){

@@ -33,6 +33,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'isAdmin'], function () {
         Route::put('update/{id}', [ArticlesController::class, 'update']);
         Route::delete('delete/{id}', [ArticlesController::class, 'destroy'])->name('deletes');
         Route::get('show/{slug}', [ArticlesController::class, 'show']);
+        Route::get('publish/{id}', [ArticlesController::class, 'publishArticle']);
     });
 });
 

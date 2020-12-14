@@ -32,6 +32,15 @@
 </div>
 @endif
 
+@if ($message = Session::get('message'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Alhamdulillah</strong> {{$message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
 <div class="row">
     <div class="col-12 item-wrapper">
         <div class="table-responsive">
@@ -82,7 +91,8 @@
                             </label>
                         </td>
                         <td>
-                            <a href="javascript:void(0)" class="btn btn-sm btn-warning">
+                            <a href="javascript:void(0)" id="video-embed"
+                                data-embed="{{$article->article_video_embeed}}" class="btn btn-sm btn-warning">
                                 <i class="mdi mdi-eye"></i>&nbsp;
                                 {{($article->article_video_embeed == null ? 'Tidak Embeed' : 'Embeed')}}
                             </a>
@@ -96,8 +106,10 @@
 
                             <a href="{{url('/admin/articles/show', $article->article_slug)}}"
                                 class="btn btn-warning btn-sm"><i class="mdi mdi-eye"></i>&nbsp; View</a>
-                            <a href="#" class="btn btn-primary btn-sm"><i class="mdi mdi-projector-screen"></i>&nbsp;
-                                Publish</a>
+                            <a href="{{url('/admin/articles/publish', $article->id)}}"
+                                class="btn {{$article->article_status == false ? 'btn-success' : 'btn-danger'}} btn-sm"><i
+                                    class="mdi mdi-projector-screen"></i>&nbsp;
+                                {{$article->article_status == false ? 'Publish' : 'Un-Publish'}}</a>
                         </td>
                     </tr>
                     @endforeach
@@ -111,6 +123,10 @@
 
 @push('scripts')
 <script>
+    $(document).ready(function() {
+        $('iframe').addClass('embed-responsive-item')
+    })
+
     $(document).on('click', '#delete-modal', function(){
         $('#delete-modal').modal('show');
         let url = $(this).data('attr');
@@ -118,7 +134,17 @@
         $('#form-delete').attr('action', url);
         $('#delete-title').text(title);
     });
+
+    $(document).on('click', '#video-embed', function(){
+        $('#embed-modal').modal('show');
+        let embed = $(this).data('embed');
+        $('#embed-video').html(embed);
+    });
+
+    $("#embed-modal").on('hidden.bs.modal', function (e) {
+        $("#embed-modal iframe").attr("src", $("#embed-modal iframe").attr("src"));
+    });
 </script>
 @endpush
 
-@include('modal.delete-modal');
+@include('modal.page-article-modal');

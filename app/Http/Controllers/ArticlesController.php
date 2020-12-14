@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\updateArticleRequest;
 use App\Models\ArticlesModel;
-use App\Models\PivotsArticlesModel;
 use Illuminate\Http\Request;
 use App\Repositories\ArticlesRepositories;
 use App\Repositories\CategoriesRepositories;
 use App\Repositories\PivotsArticleRepositories;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\DB;
+use App\Services\ArticleServices as ArticleServices;
 
 class ArticlesController extends Controller
 {
@@ -112,13 +112,7 @@ class ArticlesController extends Controller
         DB::beginTransaction();
         try {
             $articles = $this->article->getsArticle($id);
-            $articles->update([
-                'article_title'         => $request->article_title,
-                'article_slug'          => $request->article_slug,
-                'article_content'       => $request->article_content,
-                'article_url_video'     => $request->article_url_video,
-                'article_video_embeed'  => $request->article_video_embeed
-            ]);
+            ArticleServices::updateArticles($request, $articles);
             $categories = $request->category_name;
             $articles->category()->sync($categories);
             DB::commit();
@@ -142,9 +136,35 @@ class ArticlesController extends Controller
         return redirect()->back()->with('status', 'Artikel berhasil di hapus');
     }
 
+    /**
+     * get slug for add and update article.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
     public function getSlug(Request $request)
     {
         $slug = SlugService::createSlug(ArticlesModel::class, 'article_slug', $request->article_title);
         return response()->json(['slug' => $slug]);
+    }
+
+
+    /**
+     * Publish and unpublish article 
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+
+    public function publishArticle($id)
+    {
+        DB::beginTransaction();
+        try {
+            $article = $this->article->getsArticle($id);
+            $article->article_status == false ? $article->update(['article_status' =>  true]) : $article->update(['article_status' =>  false]);
+            DB::commit();
+            return redirect()->back()->with('status', $article->article_title . ' berhasil di ' . ($article->article_status == false ? 'un-publish' : 'publish'));
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('message', 'Ada kesalahan pada ' . $e->getMessage());
+        }
     }
 }

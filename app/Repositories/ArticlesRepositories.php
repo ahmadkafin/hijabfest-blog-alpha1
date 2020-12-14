@@ -90,7 +90,7 @@ class ArticlesRepositories
     }
 
     /**
-     * delete article
+     * get article by slug
      * 
      * @param [string] $slug
      * 
