@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\CategoriesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'isAdmin'], function () {
         Route::get('show/{slug}', [ArticlesController::class, 'show']);
         Route::get('publish/{id}', [ArticlesController::class, 'publishArticle']);
     });
+    Route::resource('categories', CategoriesController::class);
 });
 
 Route::group(['prefix' => 'publish'], function () {

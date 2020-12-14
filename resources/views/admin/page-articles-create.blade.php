@@ -25,7 +25,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="/admin/articles">articles</a></li>
+                <li class="breadcrumb-item"><a href="/admin/{{Request::segment(2)}}">{{Request::segment(2)}}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{Request::segment(3)}}</li>
             </ol>
         </nav>
@@ -39,9 +39,7 @@
                 @csrf
                 <div class="mb-3">
                     <label for="article-title" class="form-label">Judul Artikel</label>
-                    <input type="text" name="article_title"
-                        class="form-control @error('article_title') is-invalid @enderror" id="article-title"
-                        aria-describedby="article-title" autofocus value="{{Request::old('article_title')}} ">
+                    <input type="text" name="article_title" class="form-control @error('article_title') is-invalid @enderror" id="article-title" aria-describedby="article-title" autofocus value="{{Request::old('article_title')}} ">
                     <small id="article-title" class="form-text">Masukan judul artikel</small>
                     @error('article_title')
                     <span class="invalid-feedback" role="alert">
@@ -54,9 +52,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="article-slug" class="form-label">Slug</label>
-                                <input type="text" name="article_slug"
-                                    class="form-control @error('article_slug') is-invalid @enderror" id="article-slug"
-                                    value="{{Request::old('article_slug')}} ">
+                                <input type="text" name="article_slug" class="form-control @error('article_slug') is-invalid @enderror" id="article-slug" value="{{Request::old('article_slug')}} ">
                                 <small id="article-slug" class="form-text">slug / url artikel kamu</small>
                                 @error('article_slug')
                                 <span class="invalid-feedback" role="alert">
@@ -68,8 +64,7 @@
                         <div id="kategori" class="col-md-6 form-group typehead">
                             <div class="mb-3">
                                 <label for="categories" class="form-label">Kategori</label>
-                                <select id="categories" multiple class="form-control" name="category_name[]"
-                                    data-live-search="true">
+                                <select id="categories" multiple class="form-control" name="category_name[]" data-live-search="true">
                                     @foreach ($categories as $category)
                                     <option value="{{$category->id}}">{{$category->category_name}}</option>
                                     @endforeach
@@ -97,8 +92,7 @@
                                 <label for="article-url-video">Ada video?</label>
                                 <input type="text" class="form-control @error('article_url_video')
                                     is-invalid
-                                @enderror" id="article-url-video" name="article_url_video"
-                                    value="{{Request::old('article_url_video')}}" />
+                                @enderror" id="article-url-video" name="article_url_video" value="{{Request::old('article_url_video')}}" />
                                 <small id="article-url-video" class="form-text">url video kamu</small>
                                 @error('article_url_video')
                                 <span class="invalid-feedback" role="alert">
@@ -112,8 +106,7 @@
                                 <label for="article-video-embeed">Ingin menampilkan videonya?</label>
                                 <input type="text" name="article_video_embeed" class="form-control @error('article_video_embeed')
                                     is-invalid
-                                @enderror" id="article-video-embeed"
-                                    value="{{Request::old('article_video_embeed')}}" />
+                                @enderror" id="article-video-embeed" value="{{Request::old('article_video_embeed')}}" />
                                 <small id="article-video-embeed" class="form-text">Embed video kamu disini</small>
                                 @error('article_video_embeed')
                                 <span class="invalid-feedback" role="alert">
@@ -122,6 +115,12 @@
                                 @enderror
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input type="file" name="file" id="fie">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -141,16 +140,17 @@
 <script>
     $(document).ready(function() {
         $('#summernote').summernote({
-            height: 300, 
+            height: 300,
         });
         $('#kat-baru').val();
     });
-    
+
     $('#categories').selectpicker();
-    $('#article-title').change(function(e){
+    $('#article-title').change(function(e) {
         $.get(
-            '{{route('cekslug')}}',
-            {'article_title': $(this).val()},
+            '{{route("cekslug")}}', {
+                'article_title': $(this).val()
+            },
             function(data) {
                 $('#article-slug').val(data.slug);
             }

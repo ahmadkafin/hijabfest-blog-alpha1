@@ -16,13 +16,14 @@ use App\Services\ArticleServices as ArticleServices;
 class ArticlesController extends Controller
 {
 
-    private $article, $category, $pivots;
+    private $article, $category, $pivots, $articleServices;
 
-    public function __construct(ArticlesRepositories $article, CategoriesRepositories $category, PivotsArticleRepositories $pivots)
+    public function __construct(ArticlesRepositories $article, CategoriesRepositories $category, PivotsArticleRepositories $pivots, ArticleServices $articleServices)
     {
         $this->article = $article;
         $this->category = $category;
         $this->pivots = $pivots;
+        $this->articleServices = $articleServices;
     }
 
     /**
@@ -58,15 +59,19 @@ class ArticlesController extends Controller
     {
         DB::beginTransaction();
         try {
-            $dataArtikel = $this->article->createArticle([
-                'article_title'         => $request->article_title,
-                'article_slug'          => $request->article_slug,
-                'article_content'       => $request->article_content,
-                'article_url_video'     => $request->article_url_video,
-                'article_video_embeed'  => $request->article_video_embeed
-            ]);
+            $data = $this->articleServices->popData($request);
+            $dataArtikel = $this->article->createArticle($data);
+
             $categories = $request->category_name;
+            // sync tabel pivot
             $dataArtikel->category()->sync($categories);
+
+            // populate id on artikel data
+            $idArtikel = $dataArtikel->id;
+            // file initiation
+            $file = $request->file('file');
+            // insert into tabel images
+            $this->articleServices->imageDrop($idArtikel, $file);
             DB::commit();
             return redirect('admin/articles')->with('status', 'Data ' . $request->article_title . ' berhasil disimpan');
         } catch (\Exception $e) {
@@ -132,7 +137,6 @@ class ArticlesController extends Controller
     public function destroy($id)
     {
         $this->article->deleteArticle($id);
-        $this->pivots->deletePivots($id);
         return redirect()->back()->with('status', 'Artikel berhasil di hapus');
     }
 

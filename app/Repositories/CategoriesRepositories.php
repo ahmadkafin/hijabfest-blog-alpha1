@@ -11,12 +11,9 @@ class CategoriesRepositories
      * @param [array] $data
      * 
      */
-    public function createCategories(string $data)
+    public function createCategories(array $data)
     {
-        return CategoriesModel::updateOrCreate(
-            ['category_name' => $data],
-            ['category_name' => $data]
-        );
+        return CategoriesModel::create($data);
     }
 
     /**
@@ -31,9 +28,47 @@ class CategoriesRepositories
 
     /**
      * check for exist cat
+     * @param [int] $id
+     * @param [array] $data
+     * 
+     * @return void
      */
-    public function existCat(string $id)
+    public function updateCategories(int $id, array $data)
     {
-        return CategoriesModel::where('id', $id)->exists();
+        return CategoriesModel::where('id', $id)->update($data);
+    }
+
+    /**
+     * get categories paginate
+     * @return void
+     */
+
+    public function paginateCategories()
+    {
+        return CategoriesModel::select('id', 'category_name')->withCount('pivots')->orderBy('created_at', 'desc')->paginate(10);
+    }
+
+    /**
+     * populate categories id
+     * @param [int] $id
+     * 
+     * @return void
+     */
+
+    public function findCategories(int $id)
+    {
+        return CategoriesModel::findOrFail($id);
+    }
+
+    /**
+     * Hapus kategori
+     * @param [int] $id
+     * 
+     * @return void
+     */
+
+    public function destroyCategories(int $id)
+    {
+        return CategoriesModel::where('id', $id)->delete();
     }
 }
