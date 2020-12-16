@@ -40,7 +40,7 @@ class ArticlesModel extends Model
      *
      * @return array
      */
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'article_slug' => [

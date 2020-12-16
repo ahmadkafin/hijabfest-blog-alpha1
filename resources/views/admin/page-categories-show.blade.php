@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-6 py-5">
         <h4>Dashboard</h4>
-        <p class="text-gray">Page Articles, {{Auth::user()->name}}</p>
+        <p class="text-gray">Page Categories, {{Auth::user()->name}}</p>
     </div>
 </div>
 
@@ -46,15 +46,15 @@
 @endif
 
 <div class="row">
-    <div class="col-12 item-wrapper">
+    <div class="col-8 item-wrapper mx-auto">
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped table-info">
                 <thead>
                     <tr>
                         <th>No.</th>
                         <th>Name</th>
-                        <th>Jumlah Artikel</th>
-                        <th>Aksi</th>
+                        <th class="text-right">Jumlah Artikel</th>
+                        <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,10 +65,11 @@
                     <tr>
                         <td>{{$i++}}</td>
                         <td>{{$category->category_name}}</td>
-                        <td>{{$category->pivots_count}}</td>
-                        <td>
-                            <a href="{{route('categories.edit', $category->id)}}" class="btn btn-sm btn-info">Edit</a> |
-                            <a href="javascript:void(0)" data-href="{{route('categories.destroy', $category->id)}}" data-kategori="{{$category->category_name}}" id="delete-kategori" class="btn btn-sm btn-danger">Hapus</a>
+                        <td class="text-right">{{$category->pivots_count}}</td>
+                        <td class="text-center">
+                            <a href="{{route('categories.edit', $category->id)}}" class="btn btn-sm btn-info"><i class="mdi mdi-table-edit"></i> Edit</a>
+                            <a href="javascript:void(0)" data-href="{{route('categories.destroy', $category->id)}}" data-kategori="{{$category->category_name}}" id="delete-kategori" class="btn btn-sm btn-danger"><i class="mdi mdi-delete"></i> Hapus</a>
+                            <a href="{{route('categories.show', Str::slug($category->category_name, '-'))}}" class="btn btn-info btn-sm"><i class="mdi mdi-eye"></i>&nbsp; Show</a>
                         </td>
                     </tr>
                     @endforeach

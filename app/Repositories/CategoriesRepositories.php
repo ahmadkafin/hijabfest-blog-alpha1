@@ -71,4 +71,17 @@ class CategoriesRepositories
     {
         return CategoriesModel::where('id', $id)->delete();
     }
+
+    /**
+     * get Category and Arctile
+     * @param [int] $id
+     * 
+     * @return void 
+     */
+    public function getCategoryAndArticles(string $slug)
+    {
+        return CategoriesModel::where('category_name', $slug)->whereHas('pivots', function ($q) {
+            $q->with('article');
+        })->with('pivots')->get();
+    }
 }

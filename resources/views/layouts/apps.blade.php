@@ -78,7 +78,6 @@
     </script>
     {{-- this page script --}}
     <script src="{{asset('vendor/label/assets/vendors/js/core.js')}}"></script>
-    <script src="{{asset('js/global-scripts.js')}}"></script>
     <script src="{{asset('vendor/label/assets/vendors/js/core.js')}}"></script>
     <script>
         $(window).on('load', function() {

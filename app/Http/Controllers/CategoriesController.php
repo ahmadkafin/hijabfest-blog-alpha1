@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Http\Request;
 use App\Repositories\CategoriesRepositories;
 use App\Services\CategoriesServices;
+use Illuminate\Support\Str;
 
 class CategoriesController extends Controller
 {
@@ -63,8 +64,12 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
+        $slug = Str::of(request()->segment(3))->replace('-', ' ');
+        $categories = $this->categories->getCategory();
+        $categories_articles = $this->categories->getCategoryAndArticles($slug);
+        return view('admin.page-categories-article-show', compact(['categories_articles', 'categories']));
     }
 
     /**

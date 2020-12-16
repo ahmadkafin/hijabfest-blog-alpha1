@@ -70,3 +70,30 @@ $(document).on('change', '#new-cat', function(){
             $('#results').fadeOut();
         }
     });
+
+
+
+
+
+
+
+                    <div class="col-12">
+                        <div class="col-4">
+                            <div class="card text-center text-white {{$articles->article_status == false ? 'bg-danger' : 'bg-success'}}">
+                                <div class="card-header" style="text-transform: uppercase;">
+                                    {{$articles->article->article_title}}
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        {!!Str::words($articles->article->article_content, 30)!!}
+                                    </p>
+                                    <div class="mx-3">
+                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-white">
+                                    {{\Carbon\Carbon::parse($articles->article->created_at)->diffForHumans()}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>

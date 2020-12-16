@@ -24,4 +24,9 @@ class PivotsArticlesModel extends Model
     {
         return $this->belongsTo(CategoriesModel::class, 'id_categories');
     }
+
+    public function article()
+    {
+        return $this->belongsTo(ArticlesModel::class, 'id_articles');
+    }
 }

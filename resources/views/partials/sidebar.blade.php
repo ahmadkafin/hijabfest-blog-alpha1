@@ -29,6 +29,14 @@
                 </li>
             </ul>
         </li>
+
+        <li class="{{Request::segment(2) === 'events' ? 'active' : ''}}">
+            <a href="/admin/events">
+                <span class="link-title">events</span>
+                <i class="mdi mdi-book-open-page-variant link-icon"></i>
+            </a>
+        </li>
+
         <li>
             <a href="#ui-elements" data-toggle="collapse" aria-expanded="false">
                 <span class="link-title">UI Elements</span>
