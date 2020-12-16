@@ -4,6 +4,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +44,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'isAdmin'], function () {
     });
     Route::resource('categories', CategoriesController::class);
     Route::resource('events', EventController::class);
+    Route::get('users/verivication', [HomeController::class, 'accessToPageUsers']);
+    Route::resource('users', UserController::class);
 });
 
 Route::group(['prefix' => 'publish'], function () {

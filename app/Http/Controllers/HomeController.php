@@ -21,4 +21,9 @@ class HomeController extends Controller
             return view('home');
         }
     }
+
+    public function accessToPageUsers()
+    {
+        return view('common.access-to-page-users');
+    }
 }

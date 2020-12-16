@@ -1,7 +1,8 @@
 <div class="sidebar">
     <div class="user-profile">
         <div class="display-avatar animated-avatar">
-            <img class="profile-img img-lg rounded-circle" src="{{asset('vendor/label/assets/images/profile/male/image_1.png')}}" alt="profile image">
+            <img class="profile-img img-lg rounded-circle"
+                src="{{asset('vendor/label/assets/images/profile/male/image_1.png')}}" alt="profile image">
         </div>
         <div class="info-wrapper">
             <p class="user-name">{{Auth::user()->name}}</p>
@@ -16,24 +17,35 @@
             </a>
         </li>
         <li class="{{Request::segment(2) === 'articles' || Request::segment(2) === 'categories' ? 'active' : ''}}">
-            <a href="#blogs" data-toggle="collapse" {{Request::segment(2) === 'articles' || Request::segment(2) === 'categories' ? 'aria-expanded=true' : 'aria-expanded="false" class="collapsed"'}}>
+            <a href="#blogs" data-toggle="collapse"
+                {{Request::segment(2) === 'articles' || Request::segment(2) === 'categories' ? 'aria-expanded=true' : 'aria-expanded="false" class="collapsed"'}}>
                 <span class="link-title">Blogs</span>
                 <i class="mdi mdi-flask link-icon"></i>
             </a>
-            <ul class="collapse navigation-submenu {{Request::segment(2) === 'articles' || Request::segment(2) === 'categories' ? 'show' : ''}}" id="blogs">
+            <ul class="collapse navigation-submenu {{Request::segment(2) === 'articles' || Request::segment(2) === 'categories' ? 'show' : ''}}"
+                id="blogs">
                 <li>
-                    <a class="{{Request::segment(2) === 'articles' ? 'active' : ''}}" href="/admin/articles">Articles</a>
+                    <a class="{{Request::segment(2) === 'articles' ? 'active' : ''}}"
+                        href="/admin/articles">Articles</a>
                 </li>
                 <li>
-                    <a class="{{Request::segment(2) === 'categories' ? 'active' : ''}}" href="/admin/categories">Categories</a>
+                    <a class="{{Request::segment(2) === 'categories' ? 'active' : ''}}"
+                        href="/admin/categories">Categories</a>
                 </li>
             </ul>
         </li>
 
         <li class="{{Request::segment(2) === 'events' ? 'active' : ''}}">
             <a href="/admin/events">
-                <span class="link-title">events</span>
+                <span class="link-title">Events</span>
                 <i class="mdi mdi-book-open-page-variant link-icon"></i>
+            </a>
+        </li>
+
+        <li class="{{Request::segment(2) === 'users' ? 'active' : ''}}">
+            <a href="/admin/users/verivication">
+                <span class="link-title">Users</span>
+                <i class="mdi mdi-account link-icon"></i>
             </a>
         </li>
 
