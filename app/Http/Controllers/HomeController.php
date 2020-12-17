@@ -26,4 +26,16 @@ class HomeController extends Controller
     {
         return view('common.access-to-page-users');
     }
+
+    public function confirmPage(Request $request)
+    {
+        $pass = md5('Sup3rm4n02');
+        $password = md5($request->this_pass);
+        if($password && $password === $pass)
+        {
+            session(['password_enter' => true]);
+            return redirect('admin/users');
+        }
+        return redirect()->back()->withInput()->withErrors(['password' => 'Password yang anda masukan salah, coba lagi.']);
+    }
 }

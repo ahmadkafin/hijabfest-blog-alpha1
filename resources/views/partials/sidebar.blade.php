@@ -43,7 +43,7 @@
         </li>
 
         <li class="{{Request::segment(2) === 'users' ? 'active' : ''}}">
-            <a href="/admin/users/verivication">
+            <a href="/admin/users/verification">
                 <span class="link-title">Users</span>
                 <i class="mdi mdi-account link-icon"></i>
             </a>

@@ -81,9 +81,11 @@
                                 {{$user->roles}}
                             </span>
                         </td>
-                        <td align="center">
-                            <a href="#" class="btn btn-info btn-sm"><i class="mdi mdi-table-edit"></i> Edit Roles</a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="mdi mdi-delete"></i> Hapus</a>
+                        <td align="right">
+                            <a href="{{route('users.edit', $user->id)}}" class="btn btn-info btn-sm"><i
+                                    class="mdi mdi-table-edit"></i> Edit Roles</a>
+                            <a href="#" class="btn btn-danger btn-sm" id="users-delete"><i class="mdi mdi-delete"></i>
+                                Hapus</a>
                             <a href="#"
                                 class="btn {{$user->account_status == false ? 'btn-success' : 'btn-danger'}} btn-sm"><i
                                     class="{{$user->account_status == false ? 'mdi mdi-account-check' : 'mdi mdi-account-off'}}"></i>
@@ -97,9 +99,13 @@
         </div>
     </div>
 </div>
-
+@include('modal.page-users-modal')
 @endsection
 
 @push('scripts')
-
+<script>
+    $(document).on('click', '#users-delete', function(){
+        $('#users-modal-delete').modal('show');
+    });
+</script>
 @endpush

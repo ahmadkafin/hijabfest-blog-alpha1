@@ -44,8 +44,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'isAdmin'], function () {
     });
     Route::resource('categories', CategoriesController::class);
     Route::resource('events', EventController::class);
-    Route::get('users/verivication', [HomeController::class, 'accessToPageUsers']);
-    Route::resource('users', UserController::class);
+    Route::get('users/verification', [HomeController::class, 'accessToPageUsers']);
+    Route::post('users/verifications', [HomeController::class, 'confirmPage'])->name('users.verifications');
+    Route::resource('users', UserController::class)->middleware('lockpage');
 });
 
 Route::group(['prefix' => 'publish'], function () {
