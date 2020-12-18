@@ -14,7 +14,7 @@ class UsersRepositories
 
     public function getUser()
     {
-        return User::select(['id','name','email','roles', 'username', 'account_status'])->orderBy('name')->paginate(10);
+        return User::select(['id','name','email','roles', 'username', 'account_status'])->orderBy('created_at')->paginate(10);
     }
 
     /**
@@ -26,7 +26,19 @@ class UsersRepositories
      */
     public function findUser(int $id)
     {
-        return User::select('id', 'name', 'roles')->findOrFail($id);
+        return User::select('id', 'name', 'roles', 'account_status')->findOrFail($id);
+    }
+
+    /**
+     * get user with id
+     * 
+     * @param [int] $id
+     * 
+     * @return void
+     */
+    public function findUserByName(string $slug)
+    {
+        return User::select('id', 'name')->where('name', $slug)->where('roles', 'tenan')->with('tenants')->firstOrFail();
     }
 
     /**
@@ -36,9 +48,29 @@ class UsersRepositories
      * 
      * @return void
      */
-    public function updateRoles(int $id, array $data)
+    public function updateUser(int $id, array $data)
     {
         return User::where('id', $id)->update($data);
+    }
+
+    /**
+     * delete user
+     * @param [int] $id
+     * 
+     * @return void
+     */
+    public function deleteUser(int $id)
+    {
+        return User::where('id', $id)->delete();
+    }
+
+    /**
+     * get user tenan
+     * @return void
+     */
+    public function getUserTenan()
+    {
+        return User::select('id', 'name')->where('roles', 'tenan')->withCount('tenants')->get();
     }
 
 }

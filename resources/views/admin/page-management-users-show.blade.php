@@ -68,6 +68,7 @@
                 <tbody>
                     @php
                     $i=1;
+                    $j=0;
                     @endphp
                     @foreach ($users as $user)
                     <tr>
@@ -84,13 +85,21 @@
                         <td align="right">
                             <a href="{{route('users.edit', $user->id)}}" class="btn btn-info btn-sm"><i
                                     class="mdi mdi-table-edit"></i> Edit Roles</a>
-                            <a href="#" class="btn btn-danger btn-sm" id="users-delete"><i class="mdi mdi-delete"></i>
+                            <a href="javascript:void(0)" class="btn btn-danger btn-sm"
+                                data-attr="{{route('users.destroy', $user->id)}}" data-name="{{$user->name}}"
+                                id="users-delete"><i class="mdi mdi-delete"></i>
                                 Hapus</a>
-                            <a href="#"
+                            <a href="javascript:void(0)"
+                                onclick="event.preventDefault(); document.getElementsByClassName('updateStatusForm')[{{$j++}}].submit();"
                                 class="btn {{$user->account_status == false ? 'btn-success' : 'btn-danger'}} btn-sm"><i
                                     class="{{$user->account_status == false ? 'mdi mdi-account-check' : 'mdi mdi-account-off'}}"></i>
                                 {{$user->account_status == false ? 'Aktifkan' : 'Non-aktifkan'}}
                             </a>
+                            <form action="{{route('users.updateStatus', $user->id)}}" method="POST"
+                                enctype="multipart/form-data" class="updateStatusForm">
+                                @csrf
+                                @method('PUT')
+                            </form>
                         </td>
                     </tr>
                     @endforeach
@@ -106,6 +115,8 @@
 <script>
     $(document).on('click', '#users-delete', function(){
         $('#users-modal-delete').modal('show');
+        $('.delete-title').text($(this).data('name'));
+        $('#form-user-delete').attr('action', $(this).data('attr'));
     });
 </script>
 @endpush

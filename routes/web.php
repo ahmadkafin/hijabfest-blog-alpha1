@@ -5,6 +5,7 @@ use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TenanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -46,7 +47,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'isAdmin'], function () {
     Route::resource('events', EventController::class);
     Route::get('users/verification', [HomeController::class, 'accessToPageUsers']);
     Route::post('users/verifications', [HomeController::class, 'confirmPage'])->name('users.verifications');
+    Route::put('users/updateStatus/{id}', [UserController::class, 'updateStatusUser'])->name('users.updateStatus')->middleware('lockpage');
     Route::resource('users', UserController::class)->middleware('lockpage');
+    Route::get('tenan/brand/{slug}', [TenanController::class, 'tenanbrand'])->name('tenan.brand');
+    Route::resource('tenan', TenanController::class);
 });
 
 Route::group(['prefix' => 'publish'], function () {

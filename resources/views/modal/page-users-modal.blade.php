@@ -12,14 +12,14 @@
                 <h5>Apa kamu yakin akan menghapus <span class="delete-title"
                         style="font-weight: 800; text-decoration: underline;"></span> ?</h5>
                 <hr>
-                <p>Dengan menghapus Event <span class="delete-title"
+                <p>Dengan menghapus User <span class="delete-title"
                         style="font-weight: 800; text-decoration: underline;"></span>, Kamu akan <b
                         style="text-transform: uppercase">menghapus semua data transaksi & data tenan </b>, yang
                     berkaitan dengan event ini.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <form method="POST" id="form-event-delete">
+                <form method="POST" id="form-user-delete">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm">Ya, hapus saja.</button>

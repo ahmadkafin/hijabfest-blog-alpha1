@@ -49,6 +49,13 @@
             </a>
         </li>
 
+        <li class="{{Request::segment(2) === 'tenan' ? 'active' : ''}}">
+            <a href="/admin/tenan/">
+                <span class="link-title">Tenan</span>
+                <i class="mdi mdi-store link-icon"></i>
+            </a>
+        </li>
+
         <li>
             <a href="#ui-elements" data-toggle="collapse" aria-expanded="false">
                 <span class="link-title">UI Elements</span>

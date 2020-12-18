@@ -90,7 +90,7 @@ class UserController extends Controller
                     return redirect()->back()->with('message', 'kamu ga berhak buat ngerubah roles user jadi admin');
                 }
             }
-            $this->users->updateRoles($id, $data);
+            $this->users->updateUser($id, $data);
             return redirect('admin/users/')->with('status', 'berhasil update roles!');
         } catch(\Exception $e) {
             return redirect()->back()->with('message', $e->getMessage());
@@ -105,6 +105,27 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->users->deleteUser($id);
+        return redirect()->back()->with('status', 'kamu berhasil menghapus user');
+    }
+
+    /**
+     * update status aktif user
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStatusUser($id)
+    {
+        try {
+            $users = $this->users->findUser($id);
+            $user = $users->account_status == true ? false : true;
+            $status = $users->account_status == true ? 'berhasil menonaktifkan user ' : 'berhasil mengaktifkan user ';
+            $this->users->updateUser($id, ['account_status' => $user]);
+            return redirect()->back()->with('status', $status . $users->name);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', $e->getMessage());
+        }
     }
 }
