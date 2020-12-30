@@ -14,7 +14,7 @@ class UsersRepositories
 
     public function getUser()
     {
-        return User::select(['id','name','email','roles', 'username', 'account_status'])->orderBy('created_at')->paginate(10);
+        return User::select(['id', 'name', 'email', 'roles', 'username', 'account_status'])->orderBy('created_at')->paginate(10);
     }
 
     /**
@@ -72,5 +72,4 @@ class UsersRepositories
     {
         return User::select('id', 'name')->where('roles', 'tenan')->withCount('tenants')->get();
     }
-
 }

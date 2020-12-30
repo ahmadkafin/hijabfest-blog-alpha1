@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\BoothsEventController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\TenanController;
+use App\Http\Controllers\TenanEventsController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,6 +53,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'isAdmin'], function () {
     Route::resource('users', UserController::class)->middleware('lockpage');
     Route::get('tenan/brand/{slug}', [TenanController::class, 'tenanbrand'])->name('tenan.brand');
     Route::resource('tenan', TenanController::class);
+    Route::get('events/{id}/tenan/', [TenanEventsController::class, 'index'])->name('events.tenant');
+    Route::put('events/tenant/{id}', [TenanEventsController::class, 'approveTenant'])->name('events.tenant.update');
+    Route::get('events/{id}/booths', [BoothsEventController::class, 'index'])->name('events.booths');
+    Route::get('events/{id}/booths/add', [BoothsEventController::class, 'add'])->name('events.booths.add');
+    Route::post('events/booths/store/{id}', [BoothsEventController::class, 'store'])->name('events.booths.store');
+    Route::put('events/booths/marks/{id}', [BoothsEventController::class, 'markBooth'])->name('events.booths.marks');
+    Route::put('events/booths/{id}/update', [BoothsEventController::class, 'updateBooth'])->name('events.booths.update.price');
+    Route::put('events/booths/{id}/update-number', [BoothsEventController::class, 'updateNumberBooth'])->name('events.booths.update.number');
+    Route::post('events/booths/update', [BoothsEventController::class, 'updateBatchBooth'])->name('events.booths.update.batch');
+    Route::delete('events/booths/{id}/delete', [BoothsEventController::class, 'destroyBooth'])->name('events.booths.delete');
+    Route::group(['prefix' => 'products'], function () {
+        Route::get('getSlugs', [ProductsController::class, 'getSlugProducts'])->name('getSlugsProducts');
+    });
+    Route::resource('products', ProductsController::class);
 });
 
 Route::group(['prefix' => 'publish'], function () {

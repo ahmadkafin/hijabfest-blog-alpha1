@@ -101,7 +101,7 @@
                 <div class="form-inline">
                     <div class="radio"><label> <input type="radio" name="event_is_active" class="form-check-input"
                                 value="1"> Aktif Event <i class="input-frame"></i></label></div>
-                    <div class="radio"><label> <input type="radio" name="event_is_active" class="form-check-input"
+                    <div class="radio"><label> <input type="radio" name="event_is_active" class="form-check-input" 
                                 value="0"> Non-aktif Event <i class="input-frame"></i></label></div>
                 </div>
                 <small id="event_desc" class="form-text">Apakah kamu mau langsung mengkatifkan event?</small>

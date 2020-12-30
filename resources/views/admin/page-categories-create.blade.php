@@ -38,7 +38,9 @@
             @csrf
             <div class="form-group">
                 <label for="nama kategori">Nama Kategori</label>
-                <input type="text" name="category_name" class="form-control @error('category_name') is-invalid @enderror" placeholder="nama kategori" autofocus />
+                <input type="text" name="category_name"
+                    class="form-control @error('category_name') is-invalid @enderror" placeholder="nama kategori"
+                    autofocus />
                 <small id="article-slug" class="form-text">Masukan kategori baru disini</small>
                 @error('category_name')
                 <span class="invalid-feedback" role="alert">

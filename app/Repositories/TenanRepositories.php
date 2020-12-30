@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Repositories;
+
 use App\Models\TenantModel;
 
 class TenanRepositories
@@ -16,5 +17,16 @@ class TenanRepositories
     public function getTenan(int $id)
     {
         TenantModel::where('user_id', $id)->get();
+    }
+
+    /**
+     * get Tenan brand and activate the brand
+     * 
+     * @param int $id
+     * @param array $data
+     * @return void
+     */
+    public function approveEvent(int $id, array $data)
+    {
     }
 }

@@ -56,6 +56,13 @@
             </a>
         </li>
 
+        <li class="{{Request::segment(2) === 'products' ? 'active' : ''}}">
+            <a href="/admin/products/">
+                <span class="link-title">products</span>
+                <i class="mdi mdi-store link-icon"></i>
+            </a>
+        </li>
+
         <li>
             <a href="#ui-elements" data-toggle="collapse" aria-expanded="false">
                 <span class="link-title">UI Elements</span>

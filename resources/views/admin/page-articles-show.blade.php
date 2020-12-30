@@ -63,7 +63,8 @@
                     @endphp
                     @if ($articles->isEmpty())
                     <tr>
-                        <td colspan="8" class="text-center bg-black">Data kosong, isi artikel kamu dulu yu. <a href="/admin/articles/create" class="btn btn-success btn-xs">Tambah artikel</a></td>
+<td colspan="8" class="text-center bg-black">Data kosong, isi artikel kamu dulu yu. <a href="/admin/articles/create"
+        class="btn btn-success btn-xs">Tambah artikel</a></td>
                     </tr>
                     @else
                     @foreach ($articles as $article)
@@ -84,22 +85,29 @@
                             @endif
                         </td>
                         <td>
-                            <label class="badge badge-info badge-pill" data-toggle="tooltip" data-placement="top" title="{{($article->article_url_video == null ? 'No Video' : $article->article_url_video)}}">
+<label class="badge badge-info badge-pill" data-toggle="tooltip" data-placement="top"
+    title="{{($article->article_url_video == null ? 'No Video' : $article->article_url_video)}}">
                                 {{($article->article_url_video == null ? 'No Video' : Str::limit($article->article_url_video, 15))}}
                             </label>
                         </td>
                         <td>
-                            <a href="javascript:void(0)" id="video-embed" data-embed="{{$article->article_video_embeed}}" class="btn btn-sm btn-warning">
+<a href="javascript:void(0)" id="video-embed" data-embed="{{$article->article_video_embeed}}"
+    class="btn btn-sm btn-warning">
                                 <i class="mdi mdi-eye"></i>&nbsp;
                                 {{($article->article_video_embeed == null ? 'Tidak Embeed' : 'Embeed')}}
                             </a>
                         </td>
                         <td>
-                            <a href="{{url('/admin/articles/edit', $article->id)}}" class="btn btn-info btn-sm"><i class="mdi mdi-table-edit"></i>&nbsp;Edit</a>
-                            <a href="javascript:void(0)" data-attr="{{route('deletes', $article->id)}}" data-title="{{$article->article_title}}" class="btn btn-danger btn-sm delete" id="delete-modal"><i class="mdi mdi-delete"></i>&nbsp; Delete</a>
+<a href="{{url('/admin/articles/edit', $article->id)}}" class="btn btn-info btn-sm"><i
+        class="mdi mdi-table-edit"></i>&nbsp;Edit</a>
+<a href="javascript:void(0)" data-attr="{{route('deletes', $article->id)}}" data-title="{{$article->article_title}}"
+    class="btn btn-danger btn-sm delete" id="delete-modal"><i class="mdi mdi-delete"></i>&nbsp; Delete</a>
 
-                            <a href="{{url('/admin/articles/show', $article->article_slug)}}" class="btn btn-warning btn-sm"><i class="mdi mdi-eye"></i>&nbsp; View</a>
-                            <a href="{{url('/admin/articles/publish', $article->id)}}" class="btn {{$article->article_status == false ? 'btn-success' : 'btn-danger'}} btn-sm"><i class="mdi mdi-projector-screen"></i>&nbsp;
+<a href="{{url('/admin/articles/show', $article->article_slug)}}" class="btn btn-warning btn-sm"><i
+        class="mdi mdi-eye"></i>&nbsp; View</a>
+<a href="{{url('/admin/articles/publish', $article->id)}}"
+    class="btn {{$article->article_status == false ? 'btn-success' : 'btn-danger'}} btn-sm"><i
+        class="mdi mdi-projector-screen"></i>&nbsp;
                                 {{$article->article_status == false ? 'Publish' : 'Un-Publish'}}</a>
                         </td>
                     </tr>

@@ -56,7 +56,7 @@
                         <th>Slug events</th>
                         <th>Ada cover?</th>
                         <th>Event aktif?</th>
-                        <th>Aksi</th>
+                        <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,19 +72,20 @@
                     @foreach($events as $event)
                     <tr>
                         <td>{{$i++}}</td>
-                        <td>{{$event->event_name}}</td>
+                        <td><a href="{{route('events.tenant', $event->id)}}">{{$event->event_name}}</a></td>
                         <td>{{$event->event_slug}}</td>
                         <td><a href="javascript:void(0)" id="event-cover"
                                 class="badge badge-info">{{$event->event_cover != null ? 'yes' : 'no'}}</a></td>
                         <td><span
                                 class="badge {{$event->event_is_active == true ? 'badge-success' : 'badge-danger'}}"></span>
                             {{$event->event_is_active == true ? 'Aktif' : 'Tidak Aktif'}}</td>
-                        <td>
+                        <td align="right">
                             <a href="{{route('events.edit', $event->id)}}" class="btn btn-sm btn-info"><i
                                     class="mdi mdi-table-edit"></i>&nbsp;Edit</a>
                             <a href="javascript:void(0)" id="event-delete"
                                 data-attr="{{route('events.destroy', $event->id)}}" data-name="{{$event->event_name}}"
                                 class="btn btn-sm btn-danger"><i class="mdi mdi-delete"></i>&nbsp;Hapus</a>
+                                <a href="{{route('events.booths', $event->id)}}" class="btn btn-sm btn-info"><i class="mdi mdi-store"></i>&nbsp;Booths</a>
                         </td>
                     </tr>
                     @endforeach

@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\TenanRepositories;
-use App\Repositories\UsersRepositories;
-use Illuminate\Support\Str;
+use App\Http\Requests\ProductsRequest;
+use App\Models\ProductsModel;
+use App\Repositories\ProductsRepositories;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 
-class TenanController extends Controller
+class ProductsController extends Controller
 {
-    private $users, $tenan;
 
-    public function __construct(UsersRepositories $users, TenanRepositories $tenan)
+    private $products;
+
+    public function __construct(ProductsRepositories $products)
     {
-        $this->users = $users;
-        $this->tenan = $tenan;
+        $this->products = $products;
     }
 
     /**
@@ -25,8 +26,9 @@ class TenanController extends Controller
      */
     public function index()
     {
-        $users = $this->users->getUserTenan();
-        return view('admin.page-tenan-show', compact('users'));
+        $products = $this->products->getProducts();
+        $products = $products ?? NULL;
+        return view('admin.page-products-view', compact('products'));
     }
 
     /**
@@ -36,7 +38,7 @@ class TenanController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.page-products-create');
     }
 
     /**
@@ -45,7 +47,7 @@ class TenanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductsRequest $request)
     {
         //
     }
@@ -56,11 +58,9 @@ class TenanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show($id)
     {
-        $slug = Str::of(request()->segment(3))->replace('-', ' ');
-        $user = $this->users->findUserByName($slug);
-        return view('admin.page-tenan-show-user-brands', compact('user'));
+        //
     }
 
     /**
@@ -81,7 +81,7 @@ class TenanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductsRequest $request, $id)
     {
         //
     }
@@ -98,24 +98,13 @@ class TenanController extends Controller
     }
 
     /**
-     * Show user brand
+     * get slugs products
+     * @param \Illuminate\Http\Request  $request
      * 
-     * @param string $slugs
-     * @return \Illuminate\Http\Response
      */
-    public function tenanBrand($slug)
+    public function getSlugProducts(ProductsRequest $request)
     {
-    }
-
-    /**
-     * change approval
-     * @param int $id
-     * @param \Illuminate\Http\Request
-     * 
-     * @return \Illuminate\Http\Response
-     */
-    public function approvalTenant(Request $request, $id)
-    {
-        
+        $slugs =  $request->products_name != '' ? SlugService::createSlug(ProductsModel::class, 'products_slugs', $request->products_name) : '';
+        return response()->json(['slugs' => $slugs]);
     }
 }
