@@ -11,6 +11,7 @@ class ImagesProductsModel extends Model
     protected $table = 'tbl_products_image';
     protected $fillable =
     [
+        'id',
         'products_id',
         'images_name',
     ];

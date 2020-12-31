@@ -97,3 +97,41 @@ $(document).on('change', '#new-cat', function(){
                             </div>
                         </div>
                     </div>
+
+
+
+                    // return redirect('admin/products/')->with('status', 'Berhasil menyimpan produk ' . $request->products_name);
+
+
+
+                      if ($request->hasFile('file-0')) {
+            $file = $request->file('file-0');
+            $filename = md5($now . "-" . $file->getClientOriginalName()) . "." . $file->getClientOriginalExtension();
+            $dir = public_path() . '/img/products/' . $request->products_slugs;
+            $file->move($dir, $filename);
+            ImagesProductsModel::where('id', $request->file_id_0)->update(['images_name' => $filename]);
+        } else if ($request->hasFile('file-1')) {
+            $file = $request->file('file-1');
+            $filename = md5($now . "-" . $file->getClientOriginalName()) . "." . $file->getClientOriginalExtension();
+            $dir = public_path() . '/img/products/' . $request->products_slugs;
+            $file->move($dir, $filename);
+            ImagesProductsModel::where('id', $request->file_id_1)->update(['images_name' => $filename]);
+        } else if ($request->hasFile('file-2')) {
+            $file = $request->file('file-2');
+            $filename = md5($now . "-" . $file->getClientOriginalName()) . "." . $file->getClientOriginalExtension();
+            $dir = public_path() . '/img/products/' . $request->products_slugs;
+            $file->move($dir, $filename);
+            ImagesProductsModel::where('id', $request->file_id_2)->update(['images_name' => $filename]);
+        } else if ($request->hasFile('file-3')) {
+            $file = $request->file('file-3');
+            $filename = md5($now . "-" . $file->getClientOriginalName()) . "." . $file->getClientOriginalExtension();
+            $dir = public_path() . '/img/products/' . $request->products_slugs;
+            $file->move($dir, $filename);
+            ImagesProductsModel::where('id', $request->file_id_3)->update(['images_name' => $filename]);
+        } else if ($request->hasFile('file-4')) {
+            $file = $request->file('file-4');
+            $filename = md5($now . "-" . $file->getClientOriginalName()) . "." . $file->getClientOriginalExtension();
+            $dir = public_path() . '/img/products/' . $request->products_slugs;
+            $file->move($dir, $filename);
+            ImagesProductsModel::where('id', $request->file_id_4)->update(['images_name' => $filename]);
+        }

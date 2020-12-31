@@ -77,7 +77,7 @@
                         <td>{{$product->products_slugs}}</td>
                         <td class="text-center">
                             {!!$product->images_count == null ? '<span class="badge badge-danger">Belum ada
-                                gambar</span>' : '<span class="badge badge-danger">'.$product->images_count.'</span>'!!}
+                                gambar</span>' : '<span class="badge badge-info">'.$product->images_count.'</span>'!!}
                         </td>
                         <td class="text-center">{{number_format($product->products_dimension_width)}}</td>
                         <td class="text-center">{{number_format($product->products_dimension_wide)}}</td>
@@ -85,7 +85,21 @@
                         <td class="text-right">{{$product->products_weight}}</td>
                         <td class="text-right">IDR. {{number_format($product->products_price)}}</td>
                         <td>{{$product->products_qty}}</td>
-                        <td>Action</td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    Actions
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="{{route('products.edit', $product->id)}}">Edit</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

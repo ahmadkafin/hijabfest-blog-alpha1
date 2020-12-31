@@ -31,7 +31,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
                 <li class="breadcrumb-item"><a href="/admin/{{Request::segment(2)}}">{{Request::segment(2)}}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{Request::segment(3)}}</li>
+                <li class="breadcrumb-item active" aria-current="page">{{$product->products_name}}</li>
             </ol>
         </nav>
     </div>
@@ -39,8 +39,9 @@
 
 <div class="row">
     <div class="col-12 py-5 mx-auto">
-        <form action="{{route('products.store')}}" enctype="multipart/form-data" method="POST">
+        <form action="{{route('products.update', $product->id)}}" enctype="multipart/form-data" method="POST">
             @csrf
+            @method('PUT')
             <div class="row">
                 <div class="col-md-6">
                     {{-- products name --}}
@@ -48,7 +49,7 @@
                         <label for="Product Name">Nama Produk</label>
                         <input type="text" name="products_name" id="products-name" placeholder="Masukan Nama Produk"
                             class="form-control @error('products_name') is_invalid @enderror" autocomplete="false"
-                            value="{{Request::old('products_name')}}" autofocus />
+                            value="{{$product->products_name}}" autofocus />
                         <small id="products_name" class="form-text">Nama Produk Kamu</small>
                         @error('products_name')
                         <span class="invalid-feedback" role="alert">
@@ -67,7 +68,7 @@
                             <input type="text" id="products-slugs" name="products_slugs"
                                 placeholder="Masukan Nama Produk"
                                 class="form-control @error('products_slugs') is_invalid @enderror"
-                                value="{{Request::old('products_slugs')}}" readonly />
+                                value="{{$product->products_slugs}}" readonly />
                         </div>
                         <small id="products_slugs" class="form-text">Nama url slug produk</small>
                         @error('products_slugs')
@@ -96,7 +97,7 @@
                         <div class="input-group mb-3">
                             <input type="text" id="product_weight" name="products_weight" placeholder="Berat Produk"
                                 class="form-control @error('products_weight') is_invalid @enderror"
-                                value="{{Request::old('products_weight')}}" />
+                                value="{{$product->products_weight}}" />
                             <span class="input-group-text">kg</span>
                         </div>
                     </div>
@@ -118,7 +119,7 @@
                         <input type="text" id="products_dimension_width" name="products_dimension_width"
                             placeholder="Panjang"
                             class="form-control @error('products_dimension_width') is_invalid @enderror"
-                            value="{{Request::old('products_dimension_width')}}" />
+                            value="{{$product->products_dimension_width}}" />
                         <span class="input-group-text">cm</span>
                     </div>
                 </div>
@@ -132,7 +133,7 @@
                         <input type="text" id="products_dimension_wide" name="products_dimension_wide"
                             placeholder="Lebar"
                             class="form-control @error('products_dimension_wide') is_invalid @enderror"
-                            value="{{Request::old('products_dimension_wide')}}" />
+                            value="{{$product->products_dimension_wide}}" />
                         <span class="input-group-text">cm</span>
                     </div>
                 </div>
@@ -146,7 +147,7 @@
                         <input type="text" id="products_dimension_height" name="products_dimension_height"
                             placeholder="Tinggi"
                             class="form-control @error('products_dimension_height') is_invalid @enderror"
-                            value="{{Request::old('products_dimension_height')}}" />
+                            value="{{$product->products_dimension_height}}" />
                         <span class="input-group-text">cm</span>
                     </div>
                 </div>
@@ -161,7 +162,7 @@
                         <div class="input-group mb-3">
                             <input type="text" id="products_qty" name="products_qty" placeholder="qty produk"
                                 class="form-control @error('products_qty') is_invalid @enderror"
-                                value="{{Request::old('products_qty')}}" />
+                                value="{{$product->products_qty}}" />
                         </div>
                     </div>
                     @error('products_qty')
@@ -179,7 +180,7 @@
                         <div class="input-group mb-3">
                             <input type="text" id="products_price" name="products_price" placeholder="harga produk"
                                 class="form-control @error('products_price') is_invalid @enderror"
-                                value="{{Request::old('products_price')}}" />
+                                value="{{$product->products_price}}" />
                         </div>
                     </div>
                     @error('products_price')
@@ -200,37 +201,60 @@
                 </div>
 
                 <div class="row py-4">
-                    @for ($i = 1; $i <= 5; $i++) <div class="col-md-2 px-5 mx-3">
+                    @foreach ($product->images as $keys => $image) <div class="col-md-2 px-5 mx-3">
                         <div class="card" style="18rem">
                             <div class="image-upload">
-                                <label for="file-input-{{$i}}">
-                                    <img src="{{asset('img/upload.png')}}" id="blah{{$i}}" class="card-img-top" />
+                                <label for="file-input-{{$keys}}">
+                                    <img src="{{asset('img/products/'.$product->products_slugs.'/'.$image->images_name)}}"
+                                        id="blah{{$keys}}" class="card-img-top" />
                                 </label>
-                                <input id="file-input-{{$i}}" type="file" name="file-{{$i}}" />
+                                <input id="file-input-{{$keys}}" type="file" name="file{{$keys}}" />
+                                <input type="text" value="{{$image->id}}" readonly name="file_id_{{$keys}}">
                             </div>
-                            @error('file-'.$i)
+                            @error('file-'.$keys)
                             <small class="text-danger">{{$message}}</small>
                             @enderror
                         </div>
+                    </div>
+                    @endforeach
                 </div>
-                @endfor
+
+
+
+                <div class="input-group hdtuto control-group lst increment">
+                    <input type="file" name="filenames[]" class="myfrm form-control">
+                    <div class="input-group-btn">
+                        <button class="btn btn-success" type="button"><i
+                                class="fldemo glyphicon glyphicon-plus"></i>Add</button>
+                    </div>
+                </div>
+                <div class="clone hide">
+                    <div class="hdtuto control-group lst input-group" style="margin-top:10px">
+                        <input type="file" name="filenames[]" class="myfrm form-control">
+                        <div class="input-group-btn">
+                            <button class="btn btn-danger" type="button"><i
+                                    class="fldemo glyphicon glyphicon-remove"></i> Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                {{-- images end --}}
+
+            </div> {{--row form end--}}
+
+            {{-- button start --}}
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn btn-success btn-block" type="submit">Submit</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-danger btn-block" type="button" id="btnBacks">Back</button>
+                </div>
             </div>
-            {{-- images end --}}
-
-    </div> {{--row form end--}}
-
-    {{-- button start --}}
-    <div class="row">
-        <div class="col-md-6">
-            <button class="btn btn-success btn-block" type="submit">Submit</button>
-        </div>
-        <div class="col-md-6">
-            <button class="btn btn-danger btn-block" type="button" id="btnBacks">Back</button>
-        </div>
+            {{-- button end --}}
+        </form>
     </div>
-    {{-- button end --}}
-    </form>
-</div>
 </div>
 @endsection
 
@@ -250,7 +274,7 @@ function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function(e) {
-            $('#blah1').attr('src', e.target.result);
+            $('#blah0').attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[0]); // convert to base64 string
     }
@@ -260,7 +284,7 @@ function readURL2(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function(e) {
-            $('#blah2').attr('src', e.target.result);
+            $('#blah1').attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[0]); // convert to base64 string
     }
@@ -270,7 +294,7 @@ function readURL3(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function(e) {
-            $('#blah3').attr('src', e.target.result);
+            $('#blah2').attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[0]); // convert to base64 string
     }
@@ -280,7 +304,7 @@ function readURL4(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function(e) {
-            $('#blah4').attr('src', e.target.result);
+            $('#blah3').attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[0]); // convert to base64 string
     }
@@ -290,29 +314,29 @@ function readURL5(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function(e) {
-            $('#blah5').attr('src', e.target.result);
+            $('#blah4').attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[0]); // convert to base64 string
     }
 }
 
-$("#file-input-1").change(function() {
+$("#file-input-0").change(function() {
     readURL(this);
 });
 
-$("#file-input-2").change(function() {
+$("#file-input-1").change(function() {
     readURL2(this);
 });
 
-$("#file-input-3").change(function() {
+$("#file-input-2").change(function() {
     readURL3(this);
 });
 
-$("#file-input-4").change(function() {
+$("#file-input-3").change(function() {
     readURL4(this);
 });
 
-$("#file-input-5").change(function() {
+$("#file-input-4").change(function() {
     readURL5(this);
 });
 </script>

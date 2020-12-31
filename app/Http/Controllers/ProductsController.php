@@ -4,10 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductsRequest;
+use App\Http\Requests\ProductsUpdateRequest;
+use App\Models\ImagesProductsModel;
 use App\Models\ProductsModel;
 use App\Repositories\ProductsRepositories;
+use App\Services\ProductsServices;
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\Exception\NoFileException;
 
 class ProductsController extends Controller
 {
@@ -49,7 +57,25 @@ class ProductsController extends Controller
      */
     public function store(ProductsRequest $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $prod = new ProductsServices;
+            $data = $prod->popData($request);
+            $prods = $this->products->storeProducts($data);
+            $id = $prods->id;
+            $file = $request->file();
+            if ($file != null) {
+                $prod->imagesUpload($id, $request);
+            } else {
+                DB::rollBack();
+                return redirect()->back()->with('message', 'Kamu harus memasukan 5 file foto yang berbeda.');
+            }
+            DB::commit();
+            return redirect('admin/products/')->with('status', 'Berhasil menyimpan produk ' . $request->products_name);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('message', $e->getMessage());
+        }
     }
 
     /**
@@ -71,7 +97,12 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = $this->products->findProducts($id);
+        // foreach ($product->images as $keys => $image) {
+        //     $d[$keys] = $image->id;
+        // }
+        // dd($product);
+        return view('admin.page-products-edit', compact('product'));
     }
 
     /**
@@ -81,9 +112,21 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductsRequest $request, $id)
+    public function update(ProductsUpdateRequest $request, $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $prod = new ProductsServices;
+            $data = $prod->popData($request);
+            $prod->imagesUpdateUpload($id, $request);
+            $this->products->updateProducts($id, $data);
+            DB::commit();
+            return redirect('admin/products/')->with('status', 'Berhasil menyimpan produk ' . $request->products_name);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            return redirect()->back()->with('message', $e->getMessage());
+        }
     }
 
     /**
